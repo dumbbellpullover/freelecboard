@@ -14,6 +14,7 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.*;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -83,5 +84,28 @@ class PostsApiControllerTest {
         List<Posts> all = postsRepository.findAll();
         assertThat(all.get(0).getTitle()).isEqualTo(expectedTitle);
         assertThat(all.get(0).getContent()).isEqualTo(expectedContent);
+    }
+
+    @Test
+    void deletePosts() throws Exception {
+        //given
+        Posts savedPosts = postsRepository.save(Posts.builder()
+                .title("title")
+                .content("content")
+                .author("author")
+                .build()
+        );
+
+        Long deleteId = savedPosts.getId();
+
+        String url = "http://localhost:" + port + "/api/v1/posts/" + deleteId;
+        RequestEntity<Void> build = RequestEntity.delete(url).build();
+
+        //when
+        ResponseEntity<Void> responseEntity = restTemplate.exchange(url, HttpMethod.DELETE, build, Void.class);
+
+        //then
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(responseEntity.getBody()).isNull();
     }
 }

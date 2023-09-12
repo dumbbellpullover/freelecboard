@@ -3,18 +3,20 @@ package com.ukj.board.web.dto;
 import com.ukj.board.domain.posts.Posts;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
+
 @Getter
-public class PostsResponsesDto {
+public class PostsListResponseDto {
 
     private Long id;
     private String title;
-    private String content;
     private String author;
+    private LocalDateTime lastModifiedDate;
 
-    public PostsResponsesDto(Posts entity) {
+    public PostsListResponseDto(Posts entity) {
         this.id = entity.getId();
         this.title = entity.getTitle();
-        this.content = entity.getContent();
         this.author = entity.getAuthor();
+        this.lastModifiedDate = entity.getLastModifiedDate();
     }
 }

@@ -1,6 +1,7 @@
 spring:
   profiles:
     active: local
+#    include: oauth
 
   mvc:
     hiddenmethod:
@@ -29,3 +30,17 @@ logging:
   level:
     org.hibernate.SQL: DEBUG
     org.hibernate.orm.jdbc.bind: trace #\uD30C\uB77C\uBBF8\uD130 \uBC14\uC778\uB529
+
+---
+
+#oauth
+spring:
+  profiles:
+    active: oauth
+
+  security:
+    oauth2:
+      client.registration.google:
+        client-id:
+        client-secret:
+        scope:

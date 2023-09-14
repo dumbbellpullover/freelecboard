@@ -40,7 +40,7 @@ public class SecurityConfig {
                 .oauth2Login(login ->
                         login.userInfoEndpoint(endpoint -> //[userInfoEndpoint() -> 로그인 성공 후, 사용자 정보 가져올 때 설정]
                                 endpoint.userService(customOAuth2UserService) //[userService() -> 소셜 로그인 성공 시 후속 조치의 UserService 구현체]
-                        )
+                        ).defaultSuccessUrl("/", true) //로그인 성공 후, 이동 위치 [true -> 강제 이동]
                 ) //로그인 기능 설정
                 .build();
     }

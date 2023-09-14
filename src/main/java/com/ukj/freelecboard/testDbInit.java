@@ -9,25 +9,25 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-@Profile("local")
-@Component
+//@Profile("test")
+//@Component
 @RequiredArgsConstructor
 public class testDbInit {
 
     private final InitPostsService initPostsService;
 
-    @PostConstruct
+//    @PostConstruct
     public void init() {
         initPostsService.init();
     }
 
-    @Component
+//    @Component
     static class InitPostsService {
         @PersistenceContext
         EntityManager em;
         @Transactional
         public void init() {
-            for (int i = 1; i <= 50; i++) {
+            for (int i = 1; i <= 10; i++) {
                 em.persist(
                         Posts.builder()
                                 .title("title" + i)

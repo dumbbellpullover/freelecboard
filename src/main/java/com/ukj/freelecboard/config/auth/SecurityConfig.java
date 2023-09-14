@@ -27,6 +27,7 @@ public class SecurityConfig {
                         .requestMatchers(new AntPathRequestMatcher("/images/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/js/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/posts")).permitAll()
                         //USER 권한만 가능한 URL
                         .requestMatchers(new AntPathRequestMatcher("/api/v1/**")).hasRole(Role.USER.name())
                         //설정값 이외 나머지 URL [authenticated() -> 인증된 사용자만 허용]

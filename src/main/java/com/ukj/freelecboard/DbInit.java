@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-@Profile("test")
+@Profile("local")
 @Component
 @RequiredArgsConstructor
 public class DbInit {
@@ -27,7 +27,7 @@ public class DbInit {
         EntityManager em;
         @Transactional
         public void init() {
-            for (int i = 1; i <= 100; i++) {
+            for (int i = 1; i <= 10; i++) {
                 em.persist(
                         Posts.builder()
                         .title("title" + i)

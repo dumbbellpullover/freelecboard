@@ -48,7 +48,7 @@ public class IndexController {
                 .build();
 
         postsService.save(saveRequestDto);
-        return "redirect:/";
+        return "redirect:/posts";
     }
 
     @GetMapping("/posts/{id}/edit")

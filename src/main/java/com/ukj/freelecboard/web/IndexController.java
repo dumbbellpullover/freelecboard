@@ -1,11 +1,11 @@
 package com.ukj.freelecboard.web;
 
+import com.ukj.freelecboard.config.auth.LoginUser;
 import com.ukj.freelecboard.config.auth.dto.SessionUser;
 import com.ukj.freelecboard.service.PostsService;
 import com.ukj.freelecboard.web.dto.PostsResponseDto;
 import com.ukj.freelecboard.web.dto.PostsSaveRequestDto;
 import com.ukj.freelecboard.web.dto.PostsUpdateRequestDto;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -18,12 +18,9 @@ import org.springframework.web.bind.annotation.*;
 public class IndexController {
 
     private final PostsService postsService;
-    private final HttpSession httpSession;
 
     @GetMapping("/")
-    public String index(Model model) {
-        SessionUser user = (SessionUser) httpSession.getAttribute("user");
-
+    public String index(Model model, @LoginUser SessionUser user) {
         if (user != null) {
             model.addAttribute("userName", user.getName());
         }

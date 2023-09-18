@@ -8,37 +8,40 @@
 
 <div th:replace="~{layout/bodyHeader :: bodyHeader}"></div>
 
-<h1>게시글 목록</h1>
+<div class="container my-3">
+    <h2>게시글 목록</h2>
+    <table class="table table-striped">
+        <thead class="table-dark">
+            <tr class="text-center">
+                <th>번호</th>
+                <th>제목</th>
+                <th>작성자</th>
+                <th>수정일</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="text-center" th:each="post : ${posts}">
+                <th class="w-25" th:text="*{post.id}">번호</th>
+                <th class="w-25" th:text="*{post.title}">제목</th>
+                <th class="w-25" th:text="*{post.author}">작성자</th>
+                <th class="w-25" th:text="${#temporals.format(post.lastModifiedDate, 'yyyy-MM-dd HH:mm')}">수정일</th>
+<!--                <th>-->
+<!--                    <a href="#" th:href="@{/posts/{id}/edit (id=${post.id})}" class="btn btn-primary" role="button">수정</a>-->
+<!--                </th>-->
+<!--                <th>-->
+<!--                    <form action="#" th:action="@{/posts/{id}/delete (id=${post.id})}" method="#" th:method="delete">-->
+<!--                        <button class="btn btn-primary" type="submit">삭제</button>-->
+<!--                    </form>-->
+<!--                </th>-->
+            </tr>
+        </tbody>
+    </table>
 
-<table class="table table-horizontal table-bordered">
-    <thead class="thead-strong">
-        <tr>
-            <th>게시글 번호</th>
-            <th>제목</th>
-            <th>작성자</th>
-            <th>최종 수정일</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr th:each="post : ${posts}">
-            <th th:text="*{post.id}">번호</th>
-            <th th:text="*{post.title}">제목</th>
-            <th th:text="*{post.author}">작성자</th>
-            <th th:text="*{post.lastModifiedDate}">수정일</th>
-            <td>
-                <a href="#" th:href="@{/posts/{id}/edit (id=${post.id})}" class="btn btn-primary" role="button">수정</a>
-            </td>
-            <td>
-                <form action="#" th:action="@{/posts/{id}/delete (id=${post.id})}" method="#" th:method="delete">
-                    <button class="btn btn-primary" type="submit">삭제</button>
-                </form>
-            </td>
-        </tr>
-    </tbody>
-</table>
+    <a href="/posts/new" role="button" class="btn btn-primary">글 등록</a>
 
-<a href="/posts/new" role="button" class="btn btn-primary">글 등록</a>
+    <div th:replace="~{layout/footer :: footer}"></div>
+
+</div>
 
 </body>
-    <div th:replace="~{layout/footer :: footer}"></div>
 </html>

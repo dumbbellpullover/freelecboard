@@ -1,4 +1,4 @@
-package com.ukj.freelecboard.web;
+package com.ukj.freelecboard.web.controller;
 
 import com.ukj.freelecboard.web.dto.HelloResponseDto;
 import org.springframework.web.bind.annotation.GetMapping;

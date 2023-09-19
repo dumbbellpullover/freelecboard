@@ -1,11 +1,11 @@
-package com.ukj.freelecboard.web;
+package com.ukj.freelecboard.web.controller;
 
 import com.ukj.freelecboard.config.auth.LoginUser;
 import com.ukj.freelecboard.config.auth.dto.SessionUser;
 import com.ukj.freelecboard.service.PostsService;
-import com.ukj.freelecboard.web.dto.PostsResponseDto;
-import com.ukj.freelecboard.web.dto.PostsSaveRequestDto;
-import com.ukj.freelecboard.web.dto.PostsUpdateRequestDto;
+import com.ukj.freelecboard.web.dto.posts.PostsResponseDto;
+import com.ukj.freelecboard.web.dto.posts.PostsSaveRequestDto;
+import com.ukj.freelecboard.web.dto.posts.PostsUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -33,6 +33,12 @@ public class IndexController {
         return "postsList";
     }
 
+    @GetMapping("/posts/{id}")
+    public String detail(@PathVariable Long id, Model model) {
+        model.addAttribute("post", postsService.findById(id));
+        return "postDetail";
+    }
+
     @GetMapping("/posts/new")
     public String createForm(Model model) {
         model.addAttribute("requestDto", new PostsUpdateRequestDto());
@@ -40,11 +46,11 @@ public class IndexController {
     }
 
     @PostMapping("/posts/new")
-    public String create(@ModelAttribute PostsSaveRequestDto updateRequestDto) {
+    public String create(@ModelAttribute PostsSaveRequestDto requestDto) {
         PostsSaveRequestDto saveRequestDto = PostsSaveRequestDto.builder()
-                .author(updateRequestDto.getAuthor())
-                .title(updateRequestDto.getTitle())
-                .content(updateRequestDto.getContent())
+                .author(requestDto.getAuthor())
+                .title(requestDto.getTitle())
+                .content(requestDto.getContent())
                 .build();
 
         postsService.save(saveRequestDto);

@@ -1,9 +1,9 @@
-package com.ukj.freelecboard.web;
+package com.ukj.freelecboard.web.controller;
 
 import com.ukj.freelecboard.service.PostsService;
-import com.ukj.freelecboard.web.dto.PostsResponseDto;
-import com.ukj.freelecboard.web.dto.PostsSaveRequestDto;
-import com.ukj.freelecboard.web.dto.PostsUpdateRequestDto;
+import com.ukj.freelecboard.web.dto.posts.PostsResponseDto;
+import com.ukj.freelecboard.web.dto.posts.PostsSaveRequestDto;
+import com.ukj.freelecboard.web.dto.posts.PostsUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

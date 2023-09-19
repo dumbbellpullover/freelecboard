@@ -2,10 +2,10 @@ package com.ukj.freelecboard.service;
 
 import com.ukj.freelecboard.domain.posts.Posts;
 import com.ukj.freelecboard.domain.posts.PostsRepository;
-import com.ukj.freelecboard.web.dto.PostsListResponseDto;
-import com.ukj.freelecboard.web.dto.PostsResponseDto;
-import com.ukj.freelecboard.web.dto.PostsSaveRequestDto;
-import com.ukj.freelecboard.web.dto.PostsUpdateRequestDto;
+import com.ukj.freelecboard.web.dto.posts.PostsListResponseDto;
+import com.ukj.freelecboard.web.dto.posts.PostsResponseDto;
+import com.ukj.freelecboard.web.dto.posts.PostsSaveRequestDto;
+import com.ukj.freelecboard.web.dto.posts.PostsUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,5 +48,10 @@ public class PostsService {
     public void delete(Long id) {
         Posts entity = postsRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다. id=" + id));
         postsRepository.delete(entity);
+    }
+
+    @Transactional
+    public void deleteAll() {
+        postsRepository.deleteAll();
     }
 }

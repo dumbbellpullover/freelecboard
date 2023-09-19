@@ -1,5 +1,6 @@
 package com.ukj.freelecboard;
 
+import com.ukj.freelecboard.domain.comments.Comments;
 import com.ukj.freelecboard.domain.posts.Posts;
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManager;
@@ -23,17 +24,24 @@ public class DbInit {
 
     @Component
     static class InitPostsService {
-        @PersistenceContext
-        EntityManager em;
+        @PersistenceContext EntityManager em;
         @Transactional
         public void init() {
             for (int i = 1; i <= 10; i++) {
+                em.persist(Posts.builder()
+                                    .title("title" + i)
+                                    .content("content" + i)
+                                    .author("ㅇㅇ" + i)
+                                    .build());
+            }
+
+            for (int i = 1; i <= 10; i++) {
                 em.persist(
-                        Posts.builder()
-                        .title("title" + i)
-                        .content("content" + i)
-                        .author("ㅇㅇ" + i)
-                        .build()
+                        Comments.builder()
+                                .content("content" + i)
+                                .author("ㅇㅇ" + i)
+                                .posts(em.find(Posts.class, i))
+                                .build()
                 );
             }
         }

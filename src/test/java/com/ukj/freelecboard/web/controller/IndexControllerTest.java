@@ -1,4 +1,4 @@
-package com.ukj.freelecboard.web;
+package com.ukj.freelecboard.web.controller;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

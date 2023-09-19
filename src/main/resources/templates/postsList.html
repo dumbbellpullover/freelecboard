@@ -21,10 +21,12 @@
         </thead>
         <tbody>
             <tr class="text-center" th:each="post : ${posts}">
-                <th class="w-25" th:text="*{post.id}">번호</th>
-                <th class="w-25" th:text="*{post.title}">제목</th>
-                <th class="w-25" th:text="*{post.author}">작성자</th>
-                <th class="w-25" th:text="${#temporals.format(post.lastModifiedDate, 'yyyy-MM-dd HH:mm')}">수정일</th>
+                <td class="w-25" th:text="*{post.id}">번호</td>
+                <td class="w-25">
+                    <a th:href="@{|/posts/${post.id}|}" th:text="*{post.title}"></a>
+                </td>
+                <td class="w-25" th:text="*{post.author}">작성자</td>
+                <td class="w-25" th:text="${#temporals.format(post.lastModifiedDate, 'yyyy-MM-dd HH:mm')}">수정일</td>
 <!--                <th>-->
 <!--                    <a href="#" th:href="@{/posts/{id}/edit (id=${post.id})}" class="btn btn-primary" role="button">수정</a>-->
 <!--                </th>-->
@@ -38,8 +40,6 @@
     </table>
 
     <a href="/posts/new" role="button" class="btn btn-primary">글 등록</a>
-
-    <div th:replace="~{layout/footer :: footer}"></div>
 
 </div>
 

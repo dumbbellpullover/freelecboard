@@ -1,4 +1,4 @@
-package com.ukj.freelecboard.web.dto;
+package com.ukj.freelecboard.web.dto.posts;
 
 import lombok.Builder;
 import lombok.Getter;

@@ -23,9 +23,12 @@ repositories {
 
 dependencies {
     /* Spring */
-    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    /* Thymeleaf */
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
 
     /* DB */
     runtimeOnly 'com.h2database:h2'

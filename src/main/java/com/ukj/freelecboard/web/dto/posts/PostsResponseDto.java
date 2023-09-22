@@ -16,7 +16,7 @@ public class PostsResponseDto {
     private String content;
     private String author;
     private LocalDateTime lastModifiedDate;
-    private List<CommentsResponseDto> comments = new ArrayList<>();
+    private List<CommentsResponseDto> comments;
 
     public PostsResponseDto(Posts entity) {
         this.id = entity.getId();

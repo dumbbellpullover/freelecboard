@@ -17,9 +17,9 @@ public class CommentsService {
     private final PostsRepository postsRepository;
 
     @Transactional
-    public Long save(CommentsSaveRequestDto requestDto) {
-        Posts posts = postsRepository.findById(requestDto.getPostsId())
-                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다. id=" + requestDto.getPostsId()));
+    public Long save(Long postsId, CommentsSaveRequestDto requestDto) {
+        Posts posts = postsRepository.findById(postsId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다. id=" + postsId));
 
         requestDto.setPosts(posts);
 

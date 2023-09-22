@@ -30,8 +30,12 @@ public class Comments extends BaseTimeEntity {
         this.posts = posts;
         this.content = content;
         this.author = author;
+        addComments(posts);
     }
 
+    private void addComments(Posts posts) {
+        posts.getComments().add(this);
+    }
 
 
 }

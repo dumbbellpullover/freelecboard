@@ -3,6 +3,7 @@ package com.ukj.freelecboard.web.controller;
 import com.ukj.freelecboard.config.auth.LoginUser;
 import com.ukj.freelecboard.config.auth.dto.SessionUser;
 import com.ukj.freelecboard.service.PostsService;
+import com.ukj.freelecboard.web.dto.comments.CommentsSaveRequestDto;
 import com.ukj.freelecboard.web.dto.posts.PostsResponseDto;
 import com.ukj.freelecboard.web.dto.posts.PostsSaveRequestDto;
 import com.ukj.freelecboard.web.dto.posts.PostsUpdateRequestDto;
@@ -36,7 +37,7 @@ public class IndexController {
     }
 
     @GetMapping("/posts/{id}")
-    public String detail(@PathVariable Long id, Model model) {
+    public String detail(@PathVariable Long id, Model model, @ModelAttribute(name = "requestDto") CommentsSaveRequestDto requestDto) {
         model.addAttribute("post", postsService.findById(id));
         return "postDetail";
     }

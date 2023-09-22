@@ -28,11 +28,11 @@ class CommentsServiceTest {
     void save() throws Exception {
         //given
         Posts savedPosts = postsRepository.save(Posts.builder().title("title1").author("oo1").content("content1").build());
-        CommentsSaveRequestDto comments1 = CommentsSaveRequestDto.builder().content("reply1").author("rr1").postsId(savedPosts.getId()).build();
+        CommentsSaveRequestDto comments1 = CommentsSaveRequestDto.builder().content("reply1").author("rr1").build();
 
         log.info("comments.id = {}", savedPosts.getId());
         //when
-        Long savedComments = commentsService.save(comments1);
+        Long savedComments = commentsService.save(savedPosts.getId(), comments1);
         savedPosts.getComments().add(comments1.toEntity());
         //then
         assertThat(savedPosts.getComments().size()).isEqualTo(1);

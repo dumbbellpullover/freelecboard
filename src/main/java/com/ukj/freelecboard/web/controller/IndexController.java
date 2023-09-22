@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -40,13 +42,15 @@ public class IndexController {
     }
 
     @GetMapping("/posts/new")
-    public String createForm(Model model) {
-        model.addAttribute("requestDto", new PostsUpdateRequestDto());
+    public String createForm(@ModelAttribute(name = "requestDto") PostsSaveRequestDto requestDto) {
         return "createPostsForm";
     }
 
     @PostMapping("/posts/new")
-    public String create(@ModelAttribute PostsSaveRequestDto requestDto) {
+    public String create(@Validated @ModelAttribute(name = "requestDto") PostsSaveRequestDto requestDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "createPostsForm";
+        }
         PostsSaveRequestDto saveRequestDto = PostsSaveRequestDto.builder()
                 .author(requestDto.getAuthor())
                 .title(requestDto.getTitle())

@@ -6,17 +6,17 @@
 </head>
 
 <body>
-        <!-- header -->
-        <header th:replace="~{fragments/header :: headerFragment}"></header>
+        <!-- 네비게이션 바 -->
+        <header th:replace="~{fragments/navbar :: navbarFragment}"></header>
 
-        <!-- content -->
+        <!-- 컨텐츠 -->
         <div layout:fragment="content"></div>
 
         <!-- footer -->
 <!--        <footer th:replace="~{fragments/footer :: footerFragment}"></footer>-->
 
 </body>
-
+        <!-- 스크립트 -->
         <th:block th:replace="~{fragments/config :: configFragment}"> </th:block>
 
 </html>

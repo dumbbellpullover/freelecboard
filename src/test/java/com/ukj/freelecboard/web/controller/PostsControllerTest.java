@@ -11,7 +11,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 
 @Transactional
 @SpringBootTest(webEnvironment = RANDOM_PORT)
-class IndexControllerTest {
+class PostsControllerTest {
 
     @Autowired TestRestTemplate restTemplate;
 

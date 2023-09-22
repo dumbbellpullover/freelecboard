@@ -7,6 +7,9 @@ import com.ukj.freelecboard.web.dto.posts.PostsResponseDto;
 import com.ukj.freelecboard.web.dto.posts.PostsSaveRequestDto;
 import com.ukj.freelecboard.web.dto.posts.PostsUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,11 +40,11 @@ public class PostsService {
     }
 
     @Transactional(readOnly = true)
-    public List<PostsListResponseDto> findAllDesc() {
-        return postsRepository.findAllDesc()
-                .stream()
-                .map(PostsListResponseDto::new)
-                .toList();
+    public Page<PostsListResponseDto> findPagingList(int pageNumber) {
+        Pageable pageable = PageRequest.of(pageNumber, 10);
+
+        return postsRepository.findAll(pageable)
+                .map(PostsListResponseDto::new);
     }
 
 

@@ -27,7 +27,7 @@ public class DbInit {
         @PersistenceContext EntityManager em;
         @Transactional
         public void init() {
-            for (int i = 1; i <= 10; i++) {
+            for (int i = 1; i <= 300; i++) {
                 em.persist(Posts.builder()
                                     .title("title" + i)
                                     .content("content" + i)
@@ -35,7 +35,7 @@ public class DbInit {
                                     .build());
             }
 
-            for (int i = 1; i <= 10; i++) {
+            for (int i = 1; i <= 300; i++) {
                 em.persist(
                         Comments.builder()
                                 .content("content" + i)

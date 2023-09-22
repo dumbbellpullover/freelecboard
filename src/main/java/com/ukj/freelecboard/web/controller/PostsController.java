@@ -20,8 +20,8 @@ public class PostsController {
     private final PostsService postsService;
 
     @GetMapping()
-    public String postsList(Model model) {
-        model.addAttribute("posts", postsService.findAllDesc());
+    public String postsList(Model model, @RequestParam(value = "page", defaultValue = "0") int pageNumber) {
+        model.addAttribute("posts", postsService.findPagingList(pageNumber));
         return "postsList";
     }
 
@@ -32,23 +32,26 @@ public class PostsController {
     }
 
     @GetMapping("/new")
-    public String createForm(@ModelAttribute(name = "requestDto") PostsSaveRequestDto requestDto) {
+    public String createForm(@ModelAttribute(name = "posts") PostsSaveRequestDto requestDto) {
         return "createPostsForm";
     }
 
     @PostMapping("/new")
-    public String create(@Validated @ModelAttribute(name = "requestDto") PostsSaveRequestDto requestDto, BindingResult bindingResult) {
+    public String create(@Validated @ModelAttribute(name = "posts") PostsSaveRequestDto requestDto, BindingResult bindingResult) {
+
         if (bindingResult.hasErrors()) {
             return "createPostsForm";
         }
+
         PostsSaveRequestDto saveRequestDto = PostsSaveRequestDto.builder()
                 .author(requestDto.getAuthor())
                 .title(requestDto.getTitle())
                 .content(requestDto.getContent())
                 .build();
 
-        postsService.save(saveRequestDto);
-        return "redirect:/posts";
+        Long savedId = postsService.save(saveRequestDto);
+
+        return "redirect:/posts/" + savedId;
     }
 
     @GetMapping("/{id}/edit")
@@ -61,7 +64,7 @@ public class PostsController {
     @PostMapping("/{id}/edit")
     public String update(@PathVariable Long id, @ModelAttribute PostsUpdateRequestDto requestDto) {
         postsService.update(id, requestDto);
-        return "redirect:/posts";
+        return "redirect:/posts/{id}";
     }
 
     @DeleteMapping("/{id}/delete")

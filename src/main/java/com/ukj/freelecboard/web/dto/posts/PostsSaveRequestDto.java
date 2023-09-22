@@ -3,12 +3,10 @@ package com.ukj.freelecboard.web.dto.posts;
 import com.ukj.freelecboard.domain.posts.Posts;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
+@Setter
 @NoArgsConstructor
 public class PostsSaveRequestDto {
 

@@ -24,7 +24,6 @@ public class CommentsService {
         requestDto.setPosts(posts);
 
         Comments comment = requestDto.toEntity();
-        posts.getComments().add(comment);
 
         return commentsRepository.save(comment).getId();
     }

@@ -21,6 +21,10 @@
                 <td class="w-25" th:text="*{post.id}">번호</td>
                 <td class="w-25">
                     <a th:href="@{|/posts/${post.id}|}" th:text="*{post.title}"></a>
+                    <span class="text-danger small ms-2"
+                          th:if="${post.commentsSize > 0}"
+                          th:text="${post.commentsSize}">
+                    </span>
                 </td>
                 <td class="w-25" th:text="*{post.author}">작성자</td>
                 <td class="w-25" th:text="${#temporals.format(post.lastModifiedDate, 'yyyy-MM-dd HH:mm')}">수정일</td>
@@ -35,6 +39,43 @@
             </tr>
         </tbody>
     </table>
+
+    <!-- 페이징 처리 시작 -->
+    <div th:if="${!posts.isEmpty()}">
+        <ul class="pagination justify-content-center">
+            <li class="page-item" th:classappend="${posts.isFirst()} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{|?page=0|}">
+                    <span>처음</span>
+                </a>
+            </li>
+            <li class="page-item" th:classappend="${!posts.hasPrevious()} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{|?page=${posts.number - 1}|}">
+                    <span>이전</span>
+                </a>
+            </li>
+            <li th:each="page : ${#numbers.sequence(0, posts.totalPages - 1)}"
+                th:if="${posts.number - 5 <= page && page <= posts.number + 5}"
+                th:classappend="${page == posts.number} ? 'active'"
+                class="page-item">
+                <a th:text="${page + 1}" class="page-link" th:href="@{|?page=${page}|}"></a>
+            </li>
+            <li class="page-item" th:classappend="${!posts.hasNext()} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{|?page=${posts.number + 1}|}">
+                    <span>다음</span>
+                </a>
+            </li>
+            <li class="page-item" th:classappend="${posts.isLast()} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{|?page=${posts.totalPages - 1}|}">
+                    <span>마지막</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!-- 페이징 처리 끝 -->
 
     <a href="/posts/new" role="button" class="btn btn-primary">글 등록</a>
 

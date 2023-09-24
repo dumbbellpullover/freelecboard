@@ -27,6 +27,7 @@ public class Posts extends BaseTimeEntity {
     private String content;
 
     private String author;
+    private int commentsCount;
 
     @OneToMany(mappedBy = "posts", cascade = CascadeType.REMOVE)
     List<Comments> comments = new ArrayList<>();
@@ -36,10 +37,15 @@ public class Posts extends BaseTimeEntity {
         this.title = title;
         this.content = content;
         this.author = author;
+        this.commentsCount = 0;
     }
 
     public void update(String title, String content) {
         this.title = title;
         this.content = content;
+    }
+
+    public void increaseCommentsSize() {
+        this.commentsCount++;
     }
 }

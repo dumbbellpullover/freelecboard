@@ -35,6 +35,7 @@ public class Comments extends BaseTimeEntity {
 
     private void addComments(Posts posts) {
         posts.getComments().add(this);
+        posts.increaseCommentsSize();
     }
 
 

@@ -17,7 +17,7 @@
             <div th:each="err : ${#fields.allErrors()}" th:text="${err}" />
         </div>
         <div class="mb-3">
-            <label th:for="username" class="form-label">사용자ID</label>
+            <label th:for="username" class="form-label">ID</label>
             <input type="text" th:field="*{username}" class="form-control">
         </div>
         <div class="mb-3">

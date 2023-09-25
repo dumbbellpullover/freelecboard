@@ -51,4 +51,14 @@ public class UserController {
 
         return "redirect:/";
     }
+
+    /**
+     * 실제 로그인을 진행하는 @PostMapping 방식의 메서드는 스프링 시큐리티가 대신 처리
+     * 로그인 실패시 파라미터로 error 전달; 스프링 시큐리티 규칙
+     * 시큐리티 없이 하려면 @Valid 적용, bindingResult 로 "error" 와 메세지 보내야 함
+     */
+    @GetMapping("/login")
+    public String login() {
+        return "loginForm";
+    }
 }

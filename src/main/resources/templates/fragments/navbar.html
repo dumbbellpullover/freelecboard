@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <th:block th:fragment="navbarFragment">
 
@@ -24,7 +24,8 @@
                     <a class="nav-link" th:href="@{/user/new}">회원가입</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">로그인</a>
+                    <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/user/login}">로그인</a>
+                    <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/user/logout}">로그아웃</a>
                 </li>
             </ul>
         </div>

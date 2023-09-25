@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -28,22 +30,32 @@ public class SecurityConfig {
                         .requestMatchers(new AntPathRequestMatcher("/js/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/posts")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/user/new")).permitAll()
                         //USER 권한만 가능한 URL
                         .requestMatchers(new AntPathRequestMatcher("/api/v1/**")).hasRole(Role.USER.name())
                         //설정값 이외 나머지 URL [authenticated() -> 인증된 사용자만 허용]
                         .anyRequest().authenticated()
                 ) //권한 관리 대상 지정 옵션
                 .csrf(csrf -> csrf.disable())
-//                .csrf(csrf -> csrf.ignoringRequestMatchers("/**")) //h2-console 화면 사용 위한 옵션 disable 1
+//                .csrf(csrf -> csrf.ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**"))) //h2-console 화면 사용 위한 옵션 disable 1
                 .headers(headers -> headers
                         .addHeaderWriter(new XFrameOptionsHeaderWriter(XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN))) //h2-console 화면 사용 위한 옵션 disable 2
                 .logout(logout -> logout.logoutSuccessUrl("/")) //로그아웃 성공 시, 이동 위치
-                .oauth2Login(login ->
-                        login.userInfoEndpoint(endpoint -> //[userInfoEndpoint() -> 로그인 성공 후, 사용자 정보 가져올 때 설정]
+                .oauth2Login(login -> login
+                                .loginPage("/user/login") //loginPage
+                                .userInfoEndpoint(endpoint -> //[userInfoEndpoint() -> 로그인 성공 후, 사용자 정보 가져올 때 설정]
                                 endpoint.userService(customOAuth2UserService) //[userService() -> 소셜 로그인 성공 시 후속 조치의 UserService 구현체]
                         ).defaultSuccessUrl("/", true) //로그인 성공 후, 이동 위치 [true -> 강제 이동]
                 ) //로그인 기능 설정
+                .formLogin(formLogin -> formLogin
+                                .loginPage("/user/login")
+                                .defaultSuccessUrl("/"))
                 .build();
+    }
+
+    @Bean
+    PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }
 

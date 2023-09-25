@@ -15,8 +15,8 @@ public class User extends BaseTimeEntity {
     @Id @GeneratedValue
     private Long id;
 
-    @Column(nullable = false)
-    private String name;
+    @Column(nullable = false, unique = true)
+    private String username;
 
     @Column(nullable = false, unique = true)
     private String email;
@@ -31,15 +31,16 @@ public class User extends BaseTimeEntity {
     private Role role;
 
     @Builder
-    public User(String name, String email, String picture, Role role) {
-        this.name = name;
+    public User(String username, String email, String password, String picture, Role role) {
+        this.username = username;
         this.email = email;
+        this.password = password;
         this.picture = picture;
         this.role = role;
     }
 
-    public User update(String name, String picture) {
-        this.name = name;
+    public User update(String username, String picture) {
+        this.username = username;
         this.picture = picture;
         return this;
     }

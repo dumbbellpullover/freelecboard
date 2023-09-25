@@ -17,8 +17,8 @@
             </tr>
         </thead>
         <tbody>
-            <tr class="text-center" th:each="post : ${posts}">
-                <td class="w-25" th:text="*{post.id}">번호</td>
+            <tr class="text-center" th:each="post, loop : ${posts}">
+                <td th:text="${posts.getTotalElements - (posts.number * posts.size) - loop.index}"></td>
                 <td class="w-25">
                     <a th:href="@{|/posts/${post.id}|}" th:text="*{post.title}"></a>
                     <span class="text-danger small ms-2"

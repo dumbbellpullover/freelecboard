@@ -4,6 +4,7 @@ import com.ukj.freelecboard.domain.user.Role;
 import com.ukj.freelecboard.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Map;
 
@@ -12,19 +13,22 @@ import java.util.Map;
  * dto
  */
 @Getter
+@Setter
 public class OAuthAttributes {
 
     private Map<String, Object> attributes;
     private String nameAttributeKey;
     private String username;
+    private String password;
     private String email;
     private String picture;
 
     @Builder
-    public OAuthAttributes(Map<String, Object> attributes, String nameAttributeKey, String username, String email, String picture) {
+    public OAuthAttributes(Map<String, Object> attributes, String nameAttributeKey, String username, String email, String picture, String password) {
         this.attributes = attributes;
         this.nameAttributeKey = nameAttributeKey;
         this.username = username;
+        this.password = password;
         this.email = email;
         this.picture = picture;
     }
@@ -62,8 +66,9 @@ public class OAuthAttributes {
         return User.builder()
                 .username(username)
                 .email(email)
+                .password(password)
                 .picture(picture)
-                .role(Role.GUEST)
+                .role(Role.USER)
                 .build();
     }
 }

@@ -17,7 +17,7 @@ public class DbInit {
 
     private final InitPostsService initPostsService;
 
-    @PostConstruct
+//    @PostConstruct
     public void init() {
         initPostsService.init();
     }
@@ -31,7 +31,7 @@ public class DbInit {
                 em.persist(Posts.builder()
                                     .title("title" + i)
                                     .content("content" + i)
-                                    .author("ㅇㅇ" + i)
+//                                    .author("ㅇㅇ" + i)
                                     .build());
             }
 
@@ -39,7 +39,7 @@ public class DbInit {
                 em.persist(
                         Comments.builder()
                                 .content("content" + i)
-                                .author("ㅇㅇ" + i)
+//                                .author("ㅇㅇ" + i)
                                 .posts(em.find(Posts.class, i))
                                 .build()
                 );

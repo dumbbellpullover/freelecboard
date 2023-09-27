@@ -1,6 +1,7 @@
 package com.ukj.freelecboard.web.dto.posts;
 
 import com.ukj.freelecboard.domain.posts.Posts;
+import com.ukj.freelecboard.domain.user.User;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -16,13 +17,15 @@ public class PostsSaveRequestDto {
 
     @NotEmpty(message = "내용은 필수 항목입니다.")
     private String content;
-    private String author;
+    private String authorName;
+
+    private User author;
 
     @Builder
-    public PostsSaveRequestDto(String title, String content, String author) {
+    public PostsSaveRequestDto(String title, String content, String authorName) {
         this.title = title;
         this.content = content;
-        this.author = author;
+        this.authorName = authorName;
     }
 
     public Posts toEntity() {

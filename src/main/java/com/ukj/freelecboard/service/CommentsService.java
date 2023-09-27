@@ -4,6 +4,8 @@ import com.ukj.freelecboard.domain.comments.Comments;
 import com.ukj.freelecboard.domain.comments.CommentsRepository;
 import com.ukj.freelecboard.domain.posts.Posts;
 import com.ukj.freelecboard.domain.posts.PostsRepository;
+import com.ukj.freelecboard.domain.user.User;
+import com.ukj.freelecboard.domain.user.UserRepository;
 import com.ukj.freelecboard.web.dto.comments.CommentsSaveRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,13 +17,18 @@ public class CommentsService {
 
     private final CommentsRepository commentsRepository;
     private final PostsRepository postsRepository;
+    private final UserRepository userRepository;
 
     @Transactional
     public Long save(Long postsId, CommentsSaveRequestDto requestDto) {
         Posts posts = postsRepository.findById(postsId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다. id=" + postsId));
 
+        User user = userRepository.findByUsername(requestDto.getAuthorName())
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다. userName=" + requestDto.getAuthorName()));
+
         requestDto.setPosts(posts);
+        requestDto.setAuthor(user);
 
         Comments comment = requestDto.toEntity();
 

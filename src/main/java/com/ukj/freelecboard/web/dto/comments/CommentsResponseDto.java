@@ -10,14 +10,14 @@ public class CommentsResponseDto {
 
     private Long comment_id;
     private String content;
-    private String author;
+    private String authorName;
     private LocalDateTime lastModifiedDate;
 
     /* DTO -> Entity */
     public CommentsResponseDto(Comments entity) {
         this.comment_id = entity.getId();
         this.content = entity.getContent();
-        this.author = entity.getAuthor();
+        this.authorName = entity.getAuthor().getUsername();
         this.lastModifiedDate = entity.getLastModifiedDate();
     }
 }

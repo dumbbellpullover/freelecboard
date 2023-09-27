@@ -2,6 +2,8 @@ package com.ukj.freelecboard.service;
 
 import com.ukj.freelecboard.domain.posts.Posts;
 import com.ukj.freelecboard.domain.posts.PostsRepository;
+import com.ukj.freelecboard.domain.user.User;
+import com.ukj.freelecboard.domain.user.UserRepository;
 import com.ukj.freelecboard.web.dto.posts.PostsListResponseDto;
 import com.ukj.freelecboard.web.dto.posts.PostsResponseDto;
 import com.ukj.freelecboard.web.dto.posts.PostsSaveRequestDto;
@@ -13,22 +15,27 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 public class PostsService {
 
     private final PostsRepository postsRepository;
+    private final UserRepository userRepository;
 
     @Transactional
     public Long save(PostsSaveRequestDto requestDto) {
+        User user = userRepository.findByUsername(requestDto.getAuthorName())
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다. userName=" + requestDto.getAuthorName()));
+
+        requestDto.setAuthor(user);
         return postsRepository.save(requestDto.toEntity()).getId();
     }
 
     @Transactional
     public Long update(Long id, PostsUpdateRequestDto requestDto) {
-        Posts posts = postsRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다. id=" + id));
+        Posts posts = postsRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다. id=" + id));
+
         posts.update(requestDto.getTitle(), requestDto.getContent());
         return id;
     }

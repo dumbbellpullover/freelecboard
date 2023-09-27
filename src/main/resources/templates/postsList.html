@@ -10,8 +10,8 @@
     <table class="table table-striped">
         <thead class="table-dark">
             <tr class="text-center">
-                <th>번호</th>
-                <th>제목</th>
+                <th style="width: 10%">번호</th>
+                <th style="width: 50%">제목</th>
                 <th>작성자</th>
                 <th>수정일</th>
             </tr>
@@ -26,7 +26,7 @@
                           th:text="${post.commentsSize}">
                     </span>
                 </td>
-                <td class="w-25" th:text="*{post.author}">작성자</td>
+                <td class="w-25" th:text="*{post.authorName}">작성자</td>
                 <td class="w-25" th:text="${#temporals.format(post.lastModifiedDate, 'yyyy-MM-dd HH:mm')}">수정일</td>
 <!--                <th>-->
 <!--                    <a href="#" th:href="@{/posts/{id}/edit (id=${post.id})}" class="btn btn-primary" role="button">수정</a>-->

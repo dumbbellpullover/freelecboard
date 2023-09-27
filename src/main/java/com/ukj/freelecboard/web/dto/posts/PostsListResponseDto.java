@@ -10,14 +10,14 @@ public class PostsListResponseDto {
 
     private Long id;
     private String title;
-    private String author;
+    private String authorName;
     private LocalDateTime lastModifiedDate;
     private int commentsSize;
 
     public PostsListResponseDto(Posts entity) {
         this.id = entity.getId();
         this.title = entity.getTitle();
-        this.author = entity.getAuthor();
+        this.authorName = entity.getAuthor().getUsername();
         this.lastModifiedDate = entity.getLastModifiedDate();
         this.commentsSize = entity.getCommentsCount();
     }

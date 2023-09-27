@@ -6,12 +6,16 @@ import com.ukj.freelecboard.web.dto.posts.PostsResponseDto;
 import com.ukj.freelecboard.web.dto.posts.PostsSaveRequestDto;
 import com.ukj.freelecboard.web.dto.posts.PostsUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
+@Slf4j
 @Controller
 @RequestMapping("/posts")
 @RequiredArgsConstructor
@@ -19,7 +23,7 @@ public class PostsController {
 
     private final PostsService postsService;
 
-    @GetMapping()
+    @GetMapping
     public String postsList(Model model, @RequestParam(value = "page", defaultValue = "0") int pageNumber) {
         model.addAttribute("posts", postsService.findPagingList(pageNumber));
         return "postsList";
@@ -37,14 +41,16 @@ public class PostsController {
     }
 
     @PostMapping("/new")
-    public String create(@Validated @ModelAttribute(name = "posts") PostsSaveRequestDto requestDto, BindingResult bindingResult) {
+    public String create(@Validated @ModelAttribute(name = "posts") PostsSaveRequestDto requestDto,
+                         BindingResult bindingResult,
+                         Principal principal) {
 
         if (bindingResult.hasErrors()) {
             return "createPostsForm";
         }
 
         PostsSaveRequestDto saveRequestDto = PostsSaveRequestDto.builder()
-                .author(requestDto.getAuthor())
+                .authorName(principal.getName())
                 .title(requestDto.getTitle())
                 .content(requestDto.getContent())
                 .build();

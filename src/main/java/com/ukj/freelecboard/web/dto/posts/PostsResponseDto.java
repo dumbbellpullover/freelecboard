@@ -5,7 +5,6 @@ import com.ukj.freelecboard.web.dto.comments.CommentsResponseDto;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -14,7 +13,7 @@ public class PostsResponseDto {
     private Long id;
     private String title;
     private String content;
-    private String author;
+    private String authorName;
     private LocalDateTime lastModifiedDate;
     private List<CommentsResponseDto> comments;
 
@@ -22,7 +21,7 @@ public class PostsResponseDto {
         this.id = entity.getId();
         this.title = entity.getTitle();
         this.content = entity.getContent();
-        this.author = entity.getAuthor();
+        this.authorName = entity.getAuthor().getUsername();
         this.lastModifiedDate = entity.getLastModifiedDate();
 
         this.comments = entity.getComments().stream()

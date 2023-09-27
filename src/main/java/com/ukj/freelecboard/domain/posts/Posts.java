@@ -2,6 +2,7 @@ package com.ukj.freelecboard.domain.posts;
 
 import com.ukj.freelecboard.domain.BaseTimeEntity;
 import com.ukj.freelecboard.domain.comments.Comments;
+import com.ukj.freelecboard.domain.user.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -26,17 +27,19 @@ public class Posts extends BaseTimeEntity {
     @Column(columnDefinition = "text", nullable = false)
     private String content;
 
-    private String author;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User author;
     private int commentsCount;
 
     @OneToMany(mappedBy = "posts", cascade = CascadeType.REMOVE)
     List<Comments> comments = new ArrayList<>();
 
     @Builder
-    public Posts(String title, String content, String author) {
+    public Posts(User author, String title, String content) {
+        this.author = author;
         this.title = title;
         this.content = content;
-        this.author = author;
         this.commentsCount = 0;
     }
 

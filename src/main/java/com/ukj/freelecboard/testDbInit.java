@@ -32,7 +32,7 @@ public class testDbInit {
                         Posts.builder()
                                 .title("title" + i)
                                 .content("content" + i)
-                                .author("ㅇㅇ" + i)
+//                                .author("ㅇㅇ" + i)
                                 .build()
                 );
             }

@@ -11,6 +11,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 @Controller
 @RequestMapping("/comments")
 @RequiredArgsConstructor
@@ -23,7 +25,8 @@ public class CommentsController {
     public String create(Model model,
                          @PathVariable Long postId,
                          @Validated @ModelAttribute(name = "requestDto") CommentsSaveRequestDto requestDto,
-                         BindingResult bindingResult) {
+                         BindingResult bindingResult,
+                         Principal principal) {
 
         PostsResponseDto responseDto = postsService.findById(postId);
 
@@ -33,7 +36,7 @@ public class CommentsController {
         }
 
         CommentsSaveRequestDto saveRequestDto = CommentsSaveRequestDto.builder()
-                .author(requestDto.getAuthor())
+                .authorName(principal.getName())
                 .content(requestDto.getContent())
                 .build();
 

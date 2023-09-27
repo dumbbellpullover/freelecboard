@@ -2,6 +2,7 @@ package com.ukj.freelecboard.domain.comments;
 
 import com.ukj.freelecboard.domain.BaseTimeEntity;
 import com.ukj.freelecboard.domain.posts.Posts;
+import com.ukj.freelecboard.domain.user.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -16,7 +17,9 @@ public class Comments extends BaseTimeEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String author;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User author;
 
     @Column(columnDefinition = "TEXT")
     private String content;
@@ -26,10 +29,10 @@ public class Comments extends BaseTimeEntity {
     private Posts posts;
 
     @Builder
-    public Comments(Posts posts, String content, String author) {
+    public Comments(Posts posts, User author, String content) {
         this.posts = posts;
-        this.content = content;
         this.author = author;
+        this.content = content;
         addComments(posts);
     }
 

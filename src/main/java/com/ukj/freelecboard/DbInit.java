@@ -1,12 +1,15 @@
 package com.ukj.freelecboard;
 
-import com.ukj.freelecboard.domain.comments.Comments;
-import com.ukj.freelecboard.domain.posts.Posts;
+import com.ukj.freelecboard.domain.user.Role;
+import com.ukj.freelecboard.domain.user.User;
+import com.ukj.freelecboard.service.UserService;
+import com.ukj.freelecboard.web.dto.user.UserSaveRequestDto;
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,33 +20,35 @@ public class DbInit {
 
     private final InitPostsService initPostsService;
 
-//    @PostConstruct
+    @PostConstruct
     public void init() {
         initPostsService.init();
     }
 
     @Component
     static class InitPostsService {
-        @PersistenceContext EntityManager em;
+
+        private final UserService userService;
+
+        public InitPostsService(UserService userService) {
+            this.userService = userService;
+        }
+
         @Transactional
         public void init() {
-            for (int i = 1; i <= 300; i++) {
-                em.persist(Posts.builder()
-                                    .title("title" + i)
-                                    .content("content" + i)
-//                                    .author("ㅇㅇ" + i)
-                                    .build());
-            }
+            userService.save(UserSaveRequestDto.builder()
+                    .username("kim")
+                    .email("asd@gmail.com")
+                    .password1("7")
+                    .role(Role.USER)
+                    .build());
 
-            for (int i = 1; i <= 300; i++) {
-                em.persist(
-                        Comments.builder()
-                                .content("content" + i)
-//                                .author("ㅇㅇ" + i)
-                                .posts(em.find(Posts.class, i))
-                                .build()
-                );
-            }
+            userService.save(UserSaveRequestDto.builder()
+                    .username("park")
+                    .email("qwe@gmail.com")
+                    .password1("7")
+                    .role(Role.USER)
+                    .build());
         }
     }
 }

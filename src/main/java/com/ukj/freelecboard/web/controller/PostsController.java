@@ -7,11 +7,13 @@ import com.ukj.freelecboard.web.dto.posts.PostsSaveRequestDto;
 import com.ukj.freelecboard.web.dto.posts.PostsUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
 
@@ -30,8 +32,8 @@ public class PostsController {
     }
 
     @GetMapping("/{id}")
-    public String detail(@PathVariable Long id, Model model, @ModelAttribute(name = "requestDto") CommentsSaveRequestDto requestDto) {
-        model.addAttribute("post", postsService.findById(id));
+    public String detail(@PathVariable Long id, Model model, @ModelAttribute(name = "comment") CommentsSaveRequestDto requestDto) {
+        model.addAttribute("posts", postsService.findById(id));
         return "postDetail";
     }
 
@@ -61,16 +63,28 @@ public class PostsController {
     }
 
     @GetMapping("/{id}/edit")
-    public String updateForm(@PathVariable Long id, Model model) {
-        PostsResponseDto dto = postsService.findById(id);
-        model.addAttribute("post", dto);
+    public String updateForm(@PathVariable Long id, Model model, Principal principal) {
+        PostsResponseDto responseDto = postsService.findById(id); // 페치조인으로 연관관계를 전부 끌고 오는 문제
+        if (!principal.getName().equals(responseDto.getAuthorName())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
+        }
+
+        model.addAttribute("posts", responseDto);
         return "editPostsForm";
     }
 
     @PostMapping("/{id}/edit")
-    public String update(@PathVariable Long id, @ModelAttribute PostsUpdateRequestDto requestDto) {
+    public String update(@PathVariable Long id, @ModelAttribute PostsUpdateRequestDto requestDto, Principal principal) {
+        PostsResponseDto responseDto = postsService.findById(id);
+        if (!principal.getName().equals(responseDto.getAuthorName())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
+        }
+
+        log.info("title = {}", requestDto.getTitle());
+        log.info("content = {}", requestDto.getContent());
+
         postsService.update(id, requestDto);
-        return "redirect:/posts/{id}";
+        return "redirect:/posts/" + id;
     }
 
     @DeleteMapping("/{id}/delete")

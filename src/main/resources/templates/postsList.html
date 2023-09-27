@@ -20,13 +20,13 @@
             <tr class="text-center" th:each="post, loop : ${posts}">
                 <td th:text="${posts.getTotalElements - (posts.number * posts.size) - loop.index}"></td>
                 <td class="w-25">
-                    <a th:href="@{|/posts/${post.id}|}" th:text="*{post.title}"></a>
+                    <a th:href="@{|/posts/${post.id}|}" th:text="${post.title}"></a>
                     <span class="text-danger small ms-2"
                           th:if="${post.commentsSize > 0}"
                           th:text="${post.commentsSize}">
                     </span>
                 </td>
-                <td class="w-25" th:text="*{post.authorName}">작성자</td>
+                <td class="w-25" th:text="${post.authorName}">작성자</td>
                 <td class="w-25" th:text="${#temporals.format(post.lastModifiedDate, 'yyyy-MM-dd HH:mm')}">수정일</td>
 <!--                <th>-->
 <!--                    <a href="#" th:href="@{/posts/{id}/edit (id=${post.id})}" class="btn btn-primary" role="button">수정</a>-->

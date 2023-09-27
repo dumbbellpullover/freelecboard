@@ -6,19 +6,25 @@
 <th:block layout:fragment="content">
 
 <div class="container my-3">
-    <h5 class="my-3 border-bottom pb-2">질문등록</h5>
-    <form th:action="@{/post/new}" th:object="${post}" method="post">
+    <h5 class="my-3 border-bottom pb-2">질문수정</h5>
+
+    <form role="form" th:action th:object="${posts}" method="post">
+        <!-- 데이터 유효성 검사 -->
+        <div class="alert alert-danger" role="alert" th:if="${#fields.hasAnyErrors()}">
+            <div th:each="err : ${#fields.allErrors()}" th:text="${err}" />
+        </div>
+        <!-- 데이터 유효성 검사 끝 -->
         <div class="mb-3">
-            <label th:for="title">제목</label>
+            <label th:for="title" class="mb-1">제목</label>
             <input type="text" th:field="*{title}" class="form-control" placeholder="제목을 입력하세요">
         </div>
         <div class="mb-3">
-            <label th:for="content" class="form-label">내용</label>
-            <textarea name="content" id="content" class="form-control" rows="10"></textarea>
+            <label th:for="content" class="mb-1">내용</label>
+            <textarea name="content" th:field="*{content}" rows="10" class="form-control my-1"></textarea>
         </div>
-        <input type="submit" value="저장하기" class="btn btn-primary my-2">
+        <a th:href="@{|/posts/*{id}|}" role="button" class="btn btn-secondary my-2">취소</a>
+        <button type="submit" class="btn btn-primary my-2" id="btn-save">수정</button>
     </form>
-    <a href="/posts" role="button" class="btn btn-secondary">취소</a>
 </div>
 
 </th:block>

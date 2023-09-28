@@ -14,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 
@@ -32,7 +33,7 @@ public class PostsController {
     }
 
     @GetMapping("/{id}")
-    public String detail(@PathVariable Long id, Model model, @ModelAttribute(name = "comment") CommentsSaveRequestDto requestDto) {
+    public String detail(@PathVariable Long id, Model model) {
         model.addAttribute("posts", postsService.findById(id));
         return "postsDetail";
     }
@@ -45,7 +46,8 @@ public class PostsController {
     @PostMapping("/new")
     public String create(@Validated @ModelAttribute(name = "posts") PostsSaveRequestDto requestDto,
                          BindingResult bindingResult,
-                         Principal principal) {
+                         Principal principal,
+                         RedirectAttributes redirectAttributes) {
 
         if (bindingResult.hasErrors()) {
             return "createPostsForm";
@@ -57,9 +59,11 @@ public class PostsController {
                 .content(requestDto.getContent())
                 .build();
 
-        Long savedId = postsService.save(saveRequestDto);
+        Long postId = postsService.save(saveRequestDto);
 
-        return "redirect:/posts/" + savedId;
+        redirectAttributes.addAttribute("postId", postId);
+
+        return "redirect:/posts/{postId}";
     }
 
     @GetMapping("/{id}/edit")
@@ -80,13 +84,14 @@ public class PostsController {
     }
 
     @PostMapping("/{id}/edit")
-    public String update(@PathVariable Long id,
+    public String update(@PathVariable Long postId,
                          @Validated @ModelAttribute(name = "posts") PostsUpdateRequestDto requestDto,
                          BindingResult bindingResult,
-                         Principal principal) {
+                         Principal principal,
+                         RedirectAttributes redirectAttributes) {
 
         // 권한 검사
-        PostsResponseDto responseDto = postsService.findById(id);
+        PostsResponseDto responseDto = postsService.findById(postId);
         if (responseDto.getId() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "해당 게시물은 존재하지 않습니다.");
         }
@@ -94,14 +99,15 @@ public class PostsController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
         }
 
-        log.info("bindingResult = {}", bindingResult);
         // 데이터 검사
         if (bindingResult.hasErrors()){
             return "editPostsForm";
         }
 
-        postsService.update(id, requestDto);
-        return "redirect:/posts/" + id;
+        postsService.update(postId, requestDto);
+        redirectAttributes.addAttribute("postId", postId);
+
+        return "redirect:/posts/{postId}";
     }
 
     @GetMapping("/{id}/delete")

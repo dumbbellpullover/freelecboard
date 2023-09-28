@@ -3,6 +3,7 @@ package com.ukj.freelecboard.domain.comments.dto;
 import com.ukj.freelecboard.domain.comments.Comments;
 import com.ukj.freelecboard.domain.posts.Posts;
 import com.ukj.freelecboard.domain.user.User;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 
@@ -10,7 +11,7 @@ import lombok.*;
 @Setter
 public class CommentsSaveRequestDto {
 
-    @NotEmpty(message = "내용은 필수 항목입니다.")
+    @NotBlank(message = "내용은 필수 항목입니다.")
     private String content;
     private String authorName;
     private User author;

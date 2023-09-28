@@ -2,7 +2,7 @@ package com.ukj.freelecboard.config.auth;
 
 import com.ukj.freelecboard.domain.user.Role;
 import com.ukj.freelecboard.domain.user.User;
-import com.ukj.freelecboard.domain.user.UserRepository;
+import com.ukj.freelecboard.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

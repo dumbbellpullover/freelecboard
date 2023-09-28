@@ -3,7 +3,7 @@ package com.ukj.freelecboard.config.auth;
 import com.ukj.freelecboard.config.auth.dto.OAuthAttributes;
 import com.ukj.freelecboard.config.auth.dto.SessionUser;
 import com.ukj.freelecboard.domain.user.User;
-import com.ukj.freelecboard.domain.user.UserRepository;
+import com.ukj.freelecboard.domain.user.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

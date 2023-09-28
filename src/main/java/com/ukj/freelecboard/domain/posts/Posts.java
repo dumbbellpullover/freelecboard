@@ -48,7 +48,14 @@ public class Posts extends BaseTimeEntity {
         this.content = content;
     }
 
+    public void deleteComments(Comments comments) {
+        this.comments.remove(comments);
+        this.decreaseCommentsSize();
+    }
+
     public void increaseCommentsSize() {
         this.commentsCount++;
     }
+
+    public void decreaseCommentsSize() { this.commentsCount--; }
 }

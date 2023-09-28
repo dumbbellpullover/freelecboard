@@ -55,8 +55,10 @@ public class CommentsService {
 
     @Transactional
     public void delete(Long id) {
-        Comments entity = commentsRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다. id=" + id));
-        commentsRepository.delete(entity);
+        Comments comments = commentsRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다. id=" + id));
+
+        comments.getPosts().deleteComments(comments);
+        commentsRepository.deleteById(id);
     }
 
 }

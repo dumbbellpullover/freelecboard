@@ -15,8 +15,14 @@
         <!-- footer -->
 <!--        <footer th:replace="~{fragments/footer :: footerFragment}"></footer>-->
 
-</body>
-        <!-- 스크립트 -->
+
+        <!-- Bootstrap JS -->
         <th:block th:replace="~{fragments/config :: configFragment}"> </th:block>
+
+        <!-- JS Start -->
+        <th:block layout:fragment="script"></th:block>
+        <!-- JS End -->
+
+</body>
 
 </html>

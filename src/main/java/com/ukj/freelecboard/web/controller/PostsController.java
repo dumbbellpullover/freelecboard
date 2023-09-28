@@ -34,7 +34,7 @@ public class PostsController {
     @GetMapping("/{id}")
     public String detail(@PathVariable Long id, Model model, @ModelAttribute(name = "comment") CommentsSaveRequestDto requestDto) {
         model.addAttribute("posts", postsService.findById(id));
-        return "postDetail";
+        return "postsDetail";
     }
 
     @GetMapping("/new")
@@ -64,7 +64,13 @@ public class PostsController {
 
     @GetMapping("/{id}/edit")
     public String updateForm(@PathVariable Long id, Model model, Principal principal) {
-        PostsResponseDto responseDto = postsService.findById(id); // 페치조인으로 연관관계를 전부 끌고 오는 문제
+        PostsResponseDto responseDto = postsService.findById(id);
+
+        if (responseDto.getId() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "해당 게시물은 존재하지 않습니다.");
+        }
+
+        // 페치조인으로 연관관계를 전부 끌고 오는 문제
         if (!principal.getName().equals(responseDto.getAuthorName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
         }
@@ -74,21 +80,35 @@ public class PostsController {
     }
 
     @PostMapping("/{id}/edit")
-    public String update(@PathVariable Long id, @ModelAttribute PostsUpdateRequestDto requestDto, Principal principal) {
+    public String update(@PathVariable Long id,
+                         @ModelAttribute PostsUpdateRequestDto requestDto,
+                         Principal principal) {
         PostsResponseDto responseDto = postsService.findById(id);
+
+        if (responseDto.getId() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "해당 게시물은 존재하지 않습니다.");
+        }
+
         if (!principal.getName().equals(responseDto.getAuthorName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
         }
-
-        log.info("title = {}", requestDto.getTitle());
-        log.info("content = {}", requestDto.getContent());
 
         postsService.update(id, requestDto);
         return "redirect:/posts/" + id;
     }
 
-    @DeleteMapping("/{id}/delete")
-    public String delete(@PathVariable Long id) {
+    @GetMapping("/{id}/delete")
+    public String delete(@PathVariable Long id, Principal principal) {
+        PostsResponseDto responseDto = postsService.findById(id);
+
+        if (responseDto.getId() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "해당 게시물은 존재하지 않습니다.");
+        }
+
+        if (!principal.getName().equals(responseDto.getAuthorName())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제권한이 없습니다.");
+        }
+
         postsService.delete(id);
         return "redirect:/posts";
     }

@@ -76,7 +76,7 @@
 
     <!-- 답변 작성 -->
     <form th:action="@{|/posts/*{id}/comments/new|}" method="post" class="my-3">
-        <!-- 데이터 유효성 검사 /* 제대로 작동 안됨. 기능 구현 해야 함 */ -->
+        <!-- 데이터 유효성 검사 /* 제대로 작동 안됨. 기능 구현 해야 */ -->
         <div class="alert alert-danger" role="alert" th:if="${#fields.hasAnyErrors()}">
             <div th:each="err : ${#fields.allErrors()}" th:text="${err}" />
         </div>

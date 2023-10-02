@@ -1,11 +1,9 @@
 package com.ukj.freelecboard.domain.comments.controller;
 
 import com.ukj.freelecboard.domain.comments.service.CommentsService;
-import com.ukj.freelecboard.domain.posts.service.PostsService;
 import com.ukj.freelecboard.domain.comments.dto.CommentsResponseDto;
 import com.ukj.freelecboard.domain.comments.dto.CommentsSaveRequestDto;
 import com.ukj.freelecboard.domain.comments.dto.CommentsUpdateRequestDto;
-import com.ukj.freelecboard.domain.posts.dto.PostsResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -36,7 +34,13 @@ public class CommentsController {
 
         redirectAttributes.addAttribute("postId", postId);
 
+//        if (bindingResult.hasErrors()) {
+//            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.CommentsSaveRequestDto", bindingResult);
+//            redirectAttributes.addFlashAttribute("newComment", requestDto);
+//            return "redirect:/posts/{postId}";
+//        }
         if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("errorComment", "내용은 필수 항목입니다.");
             return "redirect:/posts/{postId}";
         }
 

@@ -5,16 +5,20 @@ import com.ukj.freelecboard.domain.comments.dto.CommentsSaveRequestDto;
 import com.ukj.freelecboard.domain.posts.dto.PostsResponseDto;
 import com.ukj.freelecboard.domain.posts.dto.PostsSaveRequestDto;
 import com.ukj.freelecboard.domain.posts.dto.PostsUpdateRequestDto;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
 import java.security.Principal;
 
@@ -33,7 +37,8 @@ public class PostsController {
     }
 
     @GetMapping("/{id}")
-    public String detail(@PathVariable Long id, Model model) {
+    public String detail(@PathVariable Long id, Model model,
+                         @ModelAttribute(name = "errorComment") String errorMessage) {
         model.addAttribute("posts", postsService.findById(id));
         return "postsDetail";
     }

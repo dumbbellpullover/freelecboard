@@ -31,7 +31,7 @@
                    sec:authorize="isAuthenticated()"
                    th:if="${#authentication.getName() == posts.authorName}"
                    th:text="수정"></a>
-                <a href="javascript:void(0);" th:data-uri="@{|/posts/*{id}/delete|}"
+                <a href="javascript:void(0);" th:data-uri="@{/posts/*{id}/delete}"
                    class="delete btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
                    th:if="${posts.authorName != null and #authentication.getName() == posts.authorName}"
                    th:text="삭제"></a>
@@ -74,13 +74,20 @@
     </div>
     <!-- 답변 반복 끝  -->
 
+    <!-- 데이터 유효성 검사 /* 제대로 작동 안됨. 기능 구현 해야 */ -->
+<!--    <div class="alert alert-danger" role="alert" th:if="${#fields.hasAnyErrors()}">-->
+<!--        <div th:each="err : ${#fields.allErrors()}" th:text="${err}" />-->
+<!--    </div>-->
+<!--    <div class="alert alert-danger" role="alert" th:if="${errorComment.length() > 0}">-->
+<!--        <div th:text="${errorComment}" />-->
+<!--    </div>-->
+    <!-- 데이터 유효성 검사 끝 -->
+
     <!-- 답변 작성 -->
     <form th:action="@{|/posts/*{id}/comments/new|}" method="post" class="my-3">
-        <!-- 데이터 유효성 검사 /* 제대로 작동 안됨. 기능 구현 해야 */ -->
-        <div class="alert alert-danger" role="alert" th:if="${#fields.hasAnyErrors()}">
-            <div th:each="err : ${#fields.allErrors()}" th:text="${err}" />
+        <div class="alert alert-danger" role="alert" th:if="${errorComment.length() > 0}">
+            <div th:text="${errorComment}" />
         </div>
-        <!-- 데이터 유효성 검사 끝 -->
         <textarea name="content" id="content" rows="10" class="form-control"></textarea>
         <a href="/posts" role="button" class="btn btn-secondary my-2">목록</a>
         <input type="submit" value="댓글 등록" class="btn btn-primary my-2">

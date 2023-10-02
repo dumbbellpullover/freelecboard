@@ -89,14 +89,14 @@ public class PostsController {
     }
 
     @PostMapping("/{id}/edit")
-    public String update(@PathVariable Long postId,
+    public String update(@PathVariable Long id,
                          @Validated @ModelAttribute(name = "posts") PostsUpdateRequestDto requestDto,
                          BindingResult bindingResult,
                          Principal principal,
                          RedirectAttributes redirectAttributes) {
 
         // 권한 검사
-        PostsResponseDto responseDto = postsService.findById(postId);
+        PostsResponseDto responseDto = postsService.findById(id);
         if (responseDto.getId() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "해당 게시물은 존재하지 않습니다.");
         }
@@ -109,8 +109,8 @@ public class PostsController {
             return "editPostsForm";
         }
 
-        postsService.update(postId, requestDto);
-        redirectAttributes.addAttribute("postId", postId);
+        postsService.update(id, requestDto);
+        redirectAttributes.addAttribute("postId", id);
 
         return "redirect:/posts/{postId}";
     }

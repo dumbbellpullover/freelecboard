@@ -9,6 +9,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -28,20 +31,21 @@ public class Comments extends BaseTimeEntity {
     @JoinColumn(name = "posts_id")
     private Posts posts;
 
+    private int voteCount;
+
     @Builder
     public Comments(Posts posts, User author, String content) {
         this.posts = posts;
         this.author = author;
         this.content = content;
-        addComments(posts);
-    }
-
-    private void addComments(Posts posts) {
-        posts.getComments().add(this);
-        posts.increaseCommentsSize();
+        posts.addComments(this);
     }
 
     public void update(String content) {
         this.content = content;
     }
+
+    public void increaseVotesCount() {this.voteCount++;}
+
+    public void decreaseVotesCount() {this.voteCount--;}
 }

@@ -19,6 +19,7 @@ public class PostsResponseDto {
     private LocalDateTime createdDate;
     private LocalDateTime lastModifiedDate;
     private List<CommentsResponseDto> comments;
+    private int voteCount;
 
     public PostsResponseDto(Posts entity) {
         this.id = entity.getId();
@@ -29,7 +30,9 @@ public class PostsResponseDto {
         this.lastModifiedDate = entity.getLastModifiedDate();
 
         this.comments = entity.getComments().stream()
-                .map(c -> new CommentsResponseDto(c))
+                .map(CommentsResponseDto::new)
                 .toList();
+
+        this.voteCount = entity.getVoteCount();
     }
 }

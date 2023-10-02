@@ -2,6 +2,8 @@ package com.ukj.freelecboard.domain.posts.service;
 
 import com.ukj.freelecboard.domain.posts.Posts;
 import com.ukj.freelecboard.domain.posts.repository.PostsRepository;
+import com.ukj.freelecboard.domain.posts.PostsVoter;
+import com.ukj.freelecboard.domain.posts.repository.PostsVoterRepository;
 import com.ukj.freelecboard.domain.user.User;
 import com.ukj.freelecboard.domain.user.repository.UserRepository;
 import com.ukj.freelecboard.domain.posts.dto.PostsListResponseDto;
@@ -21,6 +23,7 @@ public class PostsService {
 
     private final PostsRepository postsRepository;
     private final UserRepository userRepository;
+    private final PostsVoterRepository postsVoterRepository;
 
     @Transactional
     public Long save(PostsSaveRequestDto requestDto) {
@@ -65,5 +68,17 @@ public class PostsService {
     @Transactional
     public void deleteAll() {
         postsRepository.deleteAll();
+    }
+
+    @Transactional
+    public void vote(Long id, String voterName) {
+        Posts posts = postsRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다. postsId=" + id));
+
+        User voter = userRepository.findByUsername(voterName)
+                .orElseThrow(() -> new IllegalArgumentException("해당 사용자는 존재하지 않습니다. userName=" + voterName));
+
+        postsVoterRepository.save(PostsVoter.createPostsVoter(posts, voter));
+        posts.increaseVotesCount();
     }
 }

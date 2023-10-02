@@ -13,12 +13,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.support.RequestContextUtils;
 
 import java.security.Principal;
 
@@ -113,6 +111,12 @@ public class PostsController {
         redirectAttributes.addAttribute("postId", id);
 
         return "redirect:/posts/{postId}";
+    }
+
+    @GetMapping("/{id}/vote")
+    public String vote(@PathVariable Long id, Principal principal) {
+        postsService.vote(id, principal.getName());
+        return "redirect:/posts/{id}";
     }
 
     @GetMapping("/{id}/delete")

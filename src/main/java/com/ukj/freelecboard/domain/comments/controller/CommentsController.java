@@ -81,6 +81,13 @@ public class CommentsController {
         return "redirect:/posts/{postId}";
     }
 
+    @GetMapping("/vote/{id}")
+    public String vote(@PathVariable Long postId, @PathVariable Long id, Principal principal, RedirectAttributes redirectAttributes) {
+        commentsService.vote(id, principal.getName());
+        redirectAttributes.addAttribute("postId", postId);
+        return "redirect:/posts/{postId}";
+    }
+
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Long postId, @PathVariable Long id, Principal principal, RedirectAttributes redirectAttributes) {
         CommentsResponseDto responseDto = commentsService.findById(id);

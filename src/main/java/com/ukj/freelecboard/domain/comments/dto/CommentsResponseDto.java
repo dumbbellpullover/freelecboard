@@ -15,6 +15,7 @@ public class CommentsResponseDto {
     private String authorName;
     private LocalDateTime createdDate;
     private LocalDateTime lastModifiedDate;
+    private int voteCount;
 
     /* DTO -> Entity */
     public CommentsResponseDto(Comments entity) {
@@ -23,5 +24,6 @@ public class CommentsResponseDto {
         this.authorName = entity.getAuthor().getUsername();
         this.createdDate = entity.getCreatedDate();
         this.lastModifiedDate = entity.getLastModifiedDate();
+        this.voteCount = entity.getVoteCount();
     }
 }

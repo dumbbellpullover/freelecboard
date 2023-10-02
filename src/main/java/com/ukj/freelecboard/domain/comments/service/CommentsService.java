@@ -1,7 +1,9 @@
 package com.ukj.freelecboard.domain.comments.service;
 
 import com.ukj.freelecboard.domain.comments.Comments;
+import com.ukj.freelecboard.domain.comments.CommentsVoter;
 import com.ukj.freelecboard.domain.comments.repository.CommentsRepository;
+import com.ukj.freelecboard.domain.comments.repository.CommentsVoterRepository;
 import com.ukj.freelecboard.domain.posts.Posts;
 import com.ukj.freelecboard.domain.posts.repository.PostsRepository;
 import com.ukj.freelecboard.domain.user.User;
@@ -21,6 +23,7 @@ public class CommentsService {
     private final CommentsRepository commentsRepository;
     private final PostsRepository postsRepository;
     private final UserRepository userRepository;
+    private final CommentsVoterRepository commentsVoterRepository;
 
     @Transactional
     public CommentsResponseDto findById(Long id) {
@@ -61,4 +64,15 @@ public class CommentsService {
         commentsRepository.deleteById(id);
     }
 
+    @Transactional
+    public void vote(Long id, String voterName) {
+        Comments comments = commentsRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다. id=" + id));
+
+        User user = userRepository.findByUsername(voterName)
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다. userName=" + voterName));
+
+        commentsVoterRepository.save(CommentsVoter.createPostsVoter(comments, user));
+        comments.increaseVotesCount();
+    }
 }

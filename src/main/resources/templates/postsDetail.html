@@ -25,14 +25,20 @@
                     <div th:text="${#temporals.format(posts.createdDate, 'yyyy-MM-dd HH:mm')}"></div>
                 </div>
             </div>
-            <!-- 수정 버튼 -->
             <div class="my-3">
+                <!-- 추천 버튼 -->
+                <a href="javascript:void(0);" class="recommend btn btn-sm btn-outline-secondary"
+                   th:data-uri="@{|/posts/*{id}/vote|}">추천
+                    <span class="badge rounded-pill bg-success" th:text="*{voteCount}"></span>
+                </a>
+                <!-- 수정 버튼 -->
                 <a th:href="@{|/posts/*{id}/edit|}" class="btn btn-sm btn-outline-secondary"
                    sec:authorize="isAuthenticated()"
                    th:if="${#authentication.getName() == posts.authorName}"
                    th:text="수정"></a>
-                <a href="javascript:void(0);" th:data-uri="@{/posts/*{id}/delete}"
-                   class="delete btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
+                <!-- 삭제 버튼 -->
+                <a href="javascript:void(0);" class="delete btn btn-sm btn-outline-secondary"
+                   th:data-uri="@{|/posts/*{id}/delete|}" sec:authorize="isAuthenticated()"
                    th:if="${posts.authorName != null and #authentication.getName() == posts.authorName}"
                    th:text="삭제"></a>
             </div>
@@ -61,10 +67,17 @@
                 </div>
             </div>
             <div class="my-3">
+                <!-- 추천 버튼 -->
+                <a href="javascript:void(0);" th:data-uri="@{|/posts/*{id}/comments/vote/${comment.commentId}|}"
+                   class="recommend btn btn-sm btn-outline-secondary"> 추천
+                    <span class="badge rounded-pill bg-success" th:text="${comment.voteCount}"></span>
+                </a>
+                <!-- 수정 버튼 -->
                 <a th:href="@{|/posts/*{id}/comments/edit/${comment.commentId}|}" class="btn btn-sm btn-outline-secondary"
                    sec:authorize="isAuthenticated()"
                    th:if="${comment.authorName != null and #authentication.getName() == comment.authorName}"
                    th:text="수정"></a>
+                <!-- 삭제 버튼 -->
                 <a href="javascript:void(0);" th:data-uri="@{|/posts/*{id}/comments/delete/${comment.commentId}|}"
                    class="delete btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
                    th:if="${comment.authorName != null and #authentication.getName() == comment.authorName}"
@@ -101,6 +114,15 @@
             if (confirm("정말로 삭제하시겠습니까?")) {
                 location.href = this.dataset.uri;
             }
+        });
+    });
+
+    const recommend_elements = document.getElementsByClassName("recommend");
+    Array.from(recommend_elements).forEach(function(element) {
+        element.addEventListener('click', function() {
+            if(confirm("정말로 추천하시겠습니까?")) {
+                location.href = this.dataset.uri;
+            };
         });
     });
 </script>

@@ -10,7 +10,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -32,6 +34,8 @@ public class Posts extends BaseTimeEntity {
     private User author;
     private int commentsCount;
 
+    private int voteCount;
+
     @OneToMany(mappedBy = "posts", cascade = CascadeType.REMOVE)
     List<Comments> comments = new ArrayList<>();
 
@@ -48,14 +52,23 @@ public class Posts extends BaseTimeEntity {
         this.content = content;
     }
 
-    public void deleteComments(Comments comments) {
-        this.comments.remove(comments);
-        this.decreaseCommentsSize();
+    public void addComments(Comments comments) {
+        this.comments.add(comments);
+        this.increaseCommentsCount();
     }
 
-    public void increaseCommentsSize() {
+    public void deleteComments(Comments comments) {
+        this.comments.remove(comments);
+        this.decreaseCommentsCount();
+    }
+
+    public void increaseCommentsCount() {
         this.commentsCount++;
     }
 
-    public void decreaseCommentsSize() { this.commentsCount--; }
+    public void decreaseCommentsCount() { this.commentsCount--; }
+
+    public void increaseVotesCount() {this.voteCount++;}
+
+    public void decreaseVotesCount() {this.voteCount--;}
 }

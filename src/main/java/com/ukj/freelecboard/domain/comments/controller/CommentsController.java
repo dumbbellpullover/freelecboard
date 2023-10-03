@@ -46,8 +46,10 @@ public class CommentsController {
 
         requestDto.setAuthorName(principal.getName());
 
-        commentsService.save(postId, requestDto);
-        return "redirect:/posts/{postId}";
+        Long id = commentsService.save(postId, requestDto);
+
+        redirectAttributes.addAttribute("id", id);
+        return "redirect:/posts/{postId}#comments_{id}";
     }
 
     @GetMapping("/edit/{id}")
@@ -78,14 +80,14 @@ public class CommentsController {
         redirectAttributes.addAttribute("postId", postId);
 
         commentsService.update(id, requestDto);
-        return "redirect:/posts/{postId}";
+        return "redirect:/posts/{postId}#comments_{id}";
     }
 
     @GetMapping("/vote/{id}")
     public String vote(@PathVariable Long postId, @PathVariable Long id, Principal principal, RedirectAttributes redirectAttributes) {
         commentsService.vote(id, principal.getName());
         redirectAttributes.addAttribute("postId", postId);
-        return "redirect:/posts/{postId}";
+        return "redirect:/posts/{postId}#comments_{id}";
     }
 
     @GetMapping("/delete/{id}")
@@ -98,7 +100,7 @@ public class CommentsController {
         redirectAttributes.addAttribute("postId", postId);
 
         commentsService.delete(id);
-        return "redirect:/posts/{postId}";
+        return "redirect:/posts/{postId}#comments_{id}";
     }
 }
 

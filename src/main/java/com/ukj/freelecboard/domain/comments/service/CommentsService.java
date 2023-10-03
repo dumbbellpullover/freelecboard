@@ -27,7 +27,7 @@ public class CommentsService {
 
     @Transactional
     public CommentsResponseDto findById(Long id) {
-        Comments comments = commentsRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다. id=" + id));
+        Comments comments = getComments(id);
         return new CommentsResponseDto(comments);
     }
 
@@ -49,30 +49,35 @@ public class CommentsService {
 
     @Transactional
     public Long update(Long commentsId, @ModelAttribute CommentsUpdateRequestDto requestDto) {
-        Comments comments = commentsRepository.findById(commentsId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다. id=" + commentsId));
+        Comments comments = getComments(commentsId);
 
         comments.update(requestDto.getContent());
         return commentsId;
     }
 
     @Transactional
-    public void delete(Long id) {
-        Comments comments = commentsRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다. id=" + id));
+    public void delete(Long commentsId) {
+        Comments comments = getComments(commentsId);
 
         comments.getPosts().deleteComments(comments);
-        commentsRepository.deleteById(id);
+        commentsRepository.deleteById(commentsId);
     }
 
     @Transactional
-    public void vote(Long id, String voterName) {
-        Comments comments = commentsRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다. id=" + id));
+    public Long vote(Long commentsId, String voterName) {
+        Comments comments = getComments(commentsId);
 
         User user = userRepository.findByUsername(voterName)
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다. userName=" + voterName));
 
         commentsVoterRepository.save(CommentsVoter.createPostsVoter(comments, user));
         comments.increaseVotesCount();
+
+        return commentsId;
+    }
+
+    private Comments getComments(Long commentsId) {
+        return commentsRepository.findById(commentsId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다. id=" + commentsId));
     }
 }

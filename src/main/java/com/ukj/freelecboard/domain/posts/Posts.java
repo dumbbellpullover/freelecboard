@@ -10,9 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -38,6 +36,9 @@ public class Posts extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "posts", cascade = CascadeType.REMOVE)
     List<Comments> comments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "posts", cascade = CascadeType.ALL)
+    List<PostsVoter> postsVoters = new ArrayList<>();
 
     @Builder
     public Posts(User author, String title, String content) {

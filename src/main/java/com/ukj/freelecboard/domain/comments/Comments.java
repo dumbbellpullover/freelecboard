@@ -9,7 +9,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -32,6 +34,9 @@ public class Comments extends BaseTimeEntity {
     private Posts posts;
 
     private int voteCount;
+
+    @OneToMany(mappedBy = "comments", cascade = CascadeType.ALL)
+    List<CommentsVoter> commentsVoters = new ArrayList<>();
 
     @Builder
     public Comments(Posts posts, User author, String content) {

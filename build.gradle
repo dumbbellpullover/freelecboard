@@ -50,6 +50,9 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testCompileOnly 'org.projectlombok:lombok'
     testAnnotationProcessor 'org.projectlombok:lombok'
+
+    /* Markdown */
+    implementation 'org.commonmark:commonmark:0.21.0'
 }
 
 tasks.named('test') {

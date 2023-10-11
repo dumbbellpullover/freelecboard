@@ -30,7 +30,7 @@ public class Posts extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User author;
-    private int commentsCount;
+    private int commentsSize;
 
     private int voteCount;
 
@@ -45,7 +45,7 @@ public class Posts extends BaseTimeEntity {
         this.author = author;
         this.title = title;
         this.content = content;
-        this.commentsCount = 0;
+        this.commentsSize = 0;
     }
 
     public void update(String title, String content) {
@@ -64,10 +64,10 @@ public class Posts extends BaseTimeEntity {
     }
 
     public void increaseCommentsCount() {
-        this.commentsCount++;
+        this.commentsSize++;
     }
 
-    public void decreaseCommentsCount() { this.commentsCount--; }
+    public void decreaseCommentsCount() { this.commentsSize--; }
 
     public void increaseVotesCount() {this.voteCount++;}
 

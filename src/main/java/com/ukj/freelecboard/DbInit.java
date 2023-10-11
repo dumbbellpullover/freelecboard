@@ -85,6 +85,15 @@ public class DbInit {
                     .authorName("park")
                     .content("hellohello")
                     .build());
+
+
+            for (int i = 3; i <= 25; i++) {
+                postsService.save(PostsSaveRequestDto.builder()
+                        .title("ㅎㅇ" + i)
+                        .content("ㅎㅇ")
+                        .authorName("kim")
+                        .build());
+            }
         }
     }
 }

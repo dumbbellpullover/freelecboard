@@ -1,15 +1,12 @@
 package com.ukj.freelecboard.domain.posts.service;
 
 import com.ukj.freelecboard.domain.posts.Posts;
+import com.ukj.freelecboard.domain.posts.dto.*;
 import com.ukj.freelecboard.domain.posts.repository.PostsRepository;
 import com.ukj.freelecboard.domain.posts.PostsVoter;
 import com.ukj.freelecboard.domain.posts.repository.PostsVoterRepository;
 import com.ukj.freelecboard.domain.user.User;
 import com.ukj.freelecboard.domain.user.repository.UserRepository;
-import com.ukj.freelecboard.domain.posts.dto.PostsListResponseDto;
-import com.ukj.freelecboard.domain.posts.dto.PostsResponseDto;
-import com.ukj.freelecboard.domain.posts.dto.PostsSaveRequestDto;
-import com.ukj.freelecboard.domain.posts.dto.PostsUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -55,6 +52,16 @@ public class PostsService {
 
         return postsRepository.findAll(pageable)
                 .map(PostsListResponseDto::new);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<PostsListResponseDto> searchPagingList(int pageNumber, String title) {
+        PostsSearchCondition searchCondition = new PostsSearchCondition();
+        searchCondition.setTitle(title);
+
+        Pageable pageable = PageRequest.of(pageNumber, 10);
+
+        return postsRepository.searchPage(searchCondition, pageable);
     }
 
 

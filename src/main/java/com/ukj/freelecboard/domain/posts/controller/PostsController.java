@@ -1,12 +1,9 @@
 package com.ukj.freelecboard.domain.posts.controller;
 
 import com.ukj.freelecboard.domain.posts.service.PostsService;
-import com.ukj.freelecboard.domain.comments.dto.CommentsSaveRequestDto;
 import com.ukj.freelecboard.domain.posts.dto.PostsResponseDto;
 import com.ukj.freelecboard.domain.posts.dto.PostsSaveRequestDto;
 import com.ukj.freelecboard.domain.posts.dto.PostsUpdateRequestDto;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -29,8 +26,14 @@ public class PostsController {
     private final PostsService postsService;
 
     @GetMapping
-    public String postsList(Model model, @RequestParam(value = "page", defaultValue = "0") int pageNumber) {
-        model.addAttribute("posts", postsService.findPagingList(pageNumber));
+    public String postsList(Model model,
+                            @RequestParam(value = "page", defaultValue = "0") int pageNumber,
+                            @RequestParam(value = "keyword", required = false) String keyword) {
+
+        model.addAttribute("pageNumber", pageNumber);
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("posts", postsService.searchPagingList(pageNumber, keyword));
+
         return "postsList";
     }
 

@@ -1,6 +1,5 @@
 package com.ukj.freelecboard.domain.user.dto;
 
-import com.ukj.freelecboard.domain.posts.Posts;
 import com.ukj.freelecboard.domain.user.Role;
 import com.ukj.freelecboard.domain.user.User;
 import jakarta.validation.constraints.Email;
@@ -8,7 +7,6 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Data;
-import org.hibernate.validator.constraints.UniqueElements;
 
 @Data
 public class UserSaveRequestDto {

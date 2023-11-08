@@ -11,14 +11,6 @@
         <div class="row">
             <div class="col-md-6">
                 <a href="/posts" role="button" class="btn btn-secondary">글 목록</a>
-                <div th:if="${userName} != null">
-                    Logged in as: <span th:text="${userName}"></span>
-                    <a href="/logout" class="btn btn-info active" role="button">Logout</a>
-                </div>
-                <div th:if="${userName} == null">
-                    <a href="/oauth2/authorization/google" class="btn btn-success active" role="button">Google Login</a>
-                    <a href="/oauth2/authorization/naver" class="btn btn-success active" role="button">Naver Login</a>
-                </div>
             </div>
             <br>
         </div>

@@ -3,6 +3,7 @@ package com.ukj.freelecboard.domain.posts.repository;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.ukj.freelecboard.domain.posts.SubjectType;
 import com.ukj.freelecboard.domain.posts.dto.PostsListResponseDto;
 import com.ukj.freelecboard.domain.posts.dto.PostsSearchCondition;
 import com.ukj.freelecboard.domain.posts.dto.QPostsListResponseDto;
@@ -38,7 +39,7 @@ public class PostsRepositoryCustomImpl implements PostsRepositoryCustom {
                 .join(user)
                 .on(posts.author.id.eq(user.id))
                 .where(
-                        titleContains(condition.getTitle())
+                        contains(condition)
                 )
                 .fetch();
     }
@@ -61,7 +62,7 @@ public class PostsRepositoryCustomImpl implements PostsRepositoryCustom {
                 .join(user)
                 .on(posts.author.id.eq(user.id))
                 .where(
-                        titleContains(condition.getTitle())
+                        contains(condition)
                 )
                 .orderBy(posts.createdDate.desc())
                 .offset(pageable.getOffset())
@@ -74,13 +75,34 @@ public class PostsRepositoryCustomImpl implements PostsRepositoryCustom {
                 .join(user)
                 .on(posts.author.id.eq(user.id))
                 .where(
-                        titleContains(condition.getTitle())
+                        contains(condition)
                 );
 
         return PageableExecutionUtils.getPage(content, pageable, () -> countQuery.fetchOne());
     }
 
-    private BooleanExpression titleContains(String title) {
-        return StringUtils.hasText(title) ? posts.title.like("%" + title + "%") : null;
+    private BooleanExpression contains(PostsSearchCondition condition) {
+//        //검색시, 글 내용이 있고, 글 제목이 있는경우 or로 검색 요청을 보내는 쿼리
+//        if(!boardContent.isEmpty() && !boardTitle.isEmpty()){
+//            return qBoardEntity.boardTitle.contains(boardTitle).or(qBoardEntity.boardContent.contains(boardContent));
+//        }
+
+        //검색시, 글 제목만 있는 경우, 글 제목을 검색 요청하는 쿼리
+        if (condition.getSubjectType() == SubjectType.TITLE){
+            return StringUtils.hasText(condition.getKeyword()) ? posts.title.contains(condition.getKeyword()) : null;
+        }
+
+        //검색시, 글 내용만 있는 경우, 글 내용을 검색 요청하는 쿼리
+        if (condition.getSubjectType() == SubjectType.CONTENT){
+            return StringUtils.hasText(condition.getKeyword()) ? posts.content.contains(condition.getKeyword()) : null;
+        }
+
+        //검색시, 작성자 있는 경우, 작성자를 검색 요청하는 쿼리
+        if (condition.getSubjectType() == SubjectType.AUTHOR){
+            return StringUtils.hasText(condition.getKeyword()) ? user.username.contains(condition.getKeyword()) : null;
+        }
+
+
+        return null;
     }
 }

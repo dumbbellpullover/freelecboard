@@ -1,8 +1,10 @@
 package com.ukj.freelecboard.domain.posts.dto;
 
+import com.ukj.freelecboard.domain.posts.SubjectType;
 import lombok.Data;
 
 @Data
 public class PostsSearchCondition {
-    String title;
+    SubjectType subjectType;
+    String keyword;
 }

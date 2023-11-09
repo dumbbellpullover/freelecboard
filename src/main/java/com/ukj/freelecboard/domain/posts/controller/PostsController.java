@@ -1,5 +1,6 @@
 package com.ukj.freelecboard.domain.posts.controller;
 
+import com.ukj.freelecboard.domain.posts.SubjectType;
 import com.ukj.freelecboard.domain.posts.service.PostsService;
 import com.ukj.freelecboard.domain.posts.dto.PostsResponseDto;
 import com.ukj.freelecboard.domain.posts.dto.PostsSaveRequestDto;
@@ -28,11 +29,13 @@ public class PostsController {
     @GetMapping
     public String postsList(Model model,
                             @RequestParam(value = "page", defaultValue = "0") int pageNumber,
+                            @RequestParam(value = "sType", required = false, name = "sType") SubjectType sType,
                             @RequestParam(value = "keyword", required = false) String keyword) {
 
         model.addAttribute("pageNumber", pageNumber);
+        model.addAttribute("sType", sType);
         model.addAttribute("keyword", keyword);
-        model.addAttribute("posts", postsService.searchPagingList(pageNumber, keyword));
+        model.addAttribute("posts", postsService.searchPagingList(pageNumber, sType, keyword));
 
         return "postsList";
     }
@@ -136,5 +139,10 @@ public class PostsController {
 
         postsService.delete(id);
         return "redirect:/posts";
+    }
+
+    @ModelAttribute("subjectTypes")
+    public SubjectType[] subjectTypes() {
+        return SubjectType.values();
     }
 }

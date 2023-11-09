@@ -1,6 +1,7 @@
 package com.ukj.freelecboard.domain.posts.service;
 
 import com.ukj.freelecboard.domain.posts.Posts;
+import com.ukj.freelecboard.domain.posts.SubjectType;
 import com.ukj.freelecboard.domain.posts.dto.*;
 import com.ukj.freelecboard.domain.posts.repository.PostsRepository;
 import com.ukj.freelecboard.domain.posts.PostsVoter;
@@ -55,9 +56,10 @@ public class PostsService {
     }
 
     @Transactional(readOnly = true)
-    public Page<PostsListResponseDto> searchPagingList(int pageNumber, String title) {
+    public Page<PostsListResponseDto> searchPagingList(int pageNumber, SubjectType subjectType, String keyword) {
         PostsSearchCondition searchCondition = new PostsSearchCondition();
-        searchCondition.setTitle(title);
+        searchCondition.setSubjectType(subjectType);
+        searchCondition.setKeyword(keyword);
 
         Pageable pageable = PageRequest.of(pageNumber, 10);
 

@@ -87,11 +87,19 @@ public class DbInit {
                     .build());
 
 
-            for (int i = 3; i <= 25; i++) {
+            for (int i = 3; i <= 13; i++) {
                 postsService.save(PostsSaveRequestDto.builder()
                         .title("ㅎㅇ" + i)
                         .content("ㅎㅇ")
                         .authorName("kim")
+                        .build());
+            }
+
+            for (int i = 14; i <= 26; i++) {
+                postsService.save(PostsSaveRequestDto.builder()
+                        .title("안녕" + i)
+                        .content("hi")
+                        .authorName("park")
                         .build());
             }
         }
